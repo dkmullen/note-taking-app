@@ -3,25 +3,30 @@ console.log('Starting notes.js');
 
 const fs = require('fs'); // fs is built-in to node
 
-// module is a variable available in node js. One of its properties is exports
-// see it with console.log(module);
-
-let addNote = (title, body) => {
-  let notes = []; // set an array of note objects
-  let note = { // set a note object
-    title,
-    body
-  };
-
+let fetchNotes = () => {
   // try / catch because our file may not exist on the first try
   try {
     // Grab the existing file of notes...
     let notesString = fs.readFileSync('notes-data.json');
     // ...and parse it into an object
-    notes = JSON.parse(notesString);
+    return JSON.parse(notesString);
   } catch(e) {
-    // No need to write catch instructions, just define the block
+    // No requirement to write catch instructions, just define the block
+    return [];
   }
+};
+
+let saveNotes = (notes) => {
+  // write to file as a JSON object, create the file if needed
+  fs.writeFileSync('notes-data.json', JSON.stringify(notes));
+};
+
+let addNote = (title, body) => {
+  let notes = fetchNotes(); // set an array of note objects
+  let note = { // set a note object
+    title,
+    body
+  };
 
   // Make an array of notes with the same title, if any
   let duplicateNotes = notes.filter((note) => note.title === title);
@@ -33,8 +38,8 @@ let addNote = (title, body) => {
 
   if (duplicateNotes.length === 0) {
     notes.push(note); // add the note to the notes array
-    // write to file as a JSON object, create the file if needed
-    fs.writeFileSync('notes-data.json', JSON.stringify(notes));
+    saveNotes(notes);
+    return note;
   }
 };
 let getAll = () => {
@@ -47,6 +52,8 @@ let removeNote = (title) => {
   console.log(`Removing ${title}`);
 };
 
+// module is a variable available in node js. One of its properties is exports
+// see it with console.log(module);
 module.exports = {
   addNote, // ES5 equivilent is addNote: addNote
   getAll,
