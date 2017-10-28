@@ -42,14 +42,23 @@ let addNote = (title, body) => {
     return note;
   }
 };
+
 let getAll = () => {
   console.log('Getting all notes');
 };
+
 let getNote = (title) => {
   console.log(`Getting ${title}`);
 };
+
 let removeNote = (title) => {
-  console.log(`Removing ${title}`);
+  let notes = fetchNotes();
+  // Make a new array that excludes the title we specified
+  let updatedNotes = notes.filter((note) => note.title !== title);
+  // Save the new array with the specified note filtered out
+  saveNotes(updatedNotes);
+  // Below returns true if lengths aren't =, indicating a note was removed
+  return notes.length !== updatedNotes.length;
 };
 
 // module is a variable available in node js. One of its properties is exports
