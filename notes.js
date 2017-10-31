@@ -48,17 +48,25 @@ let getAll = () => {
 };
 
 let getNote = (title) => {
-  console.log(`Getting ${title}`);
+  let notes = fetchNotes();
+  let filteredNotes = notes.filter((note) => note.title === title);
+  return filteredNotes[0];
 };
 
 let removeNote = (title) => {
   let notes = fetchNotes();
   // Make a new array that excludes the title we specified
-  let updatedNotes = notes.filter((note) => note.title !== title);
+  let filteredNotes = notes.filter((note) => note.title !== title);
   // Save the new array with the specified note filtered out
-  saveNotes(updatedNotes);
+  saveNotes(filteredNotes);
   // Below returns true if lengths aren't =, indicating a note was removed
-  return notes.length !== updatedNotes.length;
+  return notes.length !== filteredNotes.length;
+};
+
+let logNote = (note) => {
+  console.log('-----');
+  console.log(`Title: ${note.title}`);
+  console.log(`Body: ${note.body}`);
 };
 
 // module is a variable available in node js. One of its properties is exports
@@ -67,5 +75,6 @@ module.exports = {
   addNote, // ES5 equivilent is addNote: addNote
   getAll,
   getNote,
-  removeNote
+  removeNote,
+  logNote
 };

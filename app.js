@@ -20,9 +20,7 @@ if (command === 'add') {
   let note = notes.addNote(argv.title, argv.body);
   if (note) {
     console.log('Note created.');
-    console.log('-----');
-    console.log(`Title: ${note.title}`);
-    console.log(`Body: ${note.body}`);
+    notes.logNote(note);
   } else {
       console.log('That title already exists.');
   }
@@ -30,7 +28,13 @@ if (command === 'add') {
 } else if (command === 'list') {
   notes.getAll();
 } else if (command === 'read') {
-  notes.getNote(argv.title);
+  let note = notes.getNote(argv.title);
+  if (note) {
+    console.log('Note found.');
+    notes.logNote(note);
+  } else {
+      console.log('That title doesn\'t exist.');
+  }
 } else if (command === 'remove') {
   let noteRemoved = notes.removeNote(argv.title); // returns t or f, from notes.js
   // Ternary operator = expression ? truthy message : falsey message
