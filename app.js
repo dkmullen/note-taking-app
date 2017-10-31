@@ -1,7 +1,5 @@
 /*jshint esversion: 6 */
 
-console.log('Starting app.js');
-
 const fs = require('fs'),
   _ = require('lodash'),
   yargs = require('yargs'), // a parsing tool
@@ -13,8 +11,6 @@ const fs = require('fs'),
 const argv = yargs.argv;
 let command = argv._[0]; // same result as below, but using yargs not process
 //let command = process.argv[2];
-console.log('Command: ', command);
-console.log('Yargs', argv);
 
 if (command === 'add') {
   let note = notes.addNote(argv.title, argv.body);
@@ -26,7 +22,10 @@ if (command === 'add') {
   }
 
 } else if (command === 'list') {
-  notes.getAll();
+  let allNotes = notes.getAll();
+  console.log(`Printing ${allNotes.length} note(s).`);
+  allNotes.forEach((note) => notes.logNote(note));
+
 } else if (command === 'read') {
   let note = notes.getNote(argv.title);
   if (note) {
@@ -35,11 +34,13 @@ if (command === 'add') {
   } else {
       console.log('That title doesn\'t exist.');
   }
+
 } else if (command === 'remove') {
   let noteRemoved = notes.removeNote(argv.title); // returns t or f, from notes.js
   // Ternary operator = expression ? truthy message : falsey message
   let message = noteRemoved ? 'Note was removed' : 'Note not found';
   console.log(message);
+
 } else {
   console.log('Command not recognized');
 }

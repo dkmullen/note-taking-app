@@ -1,5 +1,4 @@
 /*jshint esversion: 6 */
-console.log('Starting notes.js');
 
 const fs = require('fs'); // fs is built-in to node
 
@@ -44,7 +43,7 @@ let addNote = (title, body) => {
 };
 
 let getAll = () => {
-  console.log('Getting all notes');
+  return fetchNotes();
 };
 
 let getNote = (title) => {
