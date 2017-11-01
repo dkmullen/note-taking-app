@@ -5,10 +5,27 @@ const fs = require('fs'),
   yargs = require('yargs'), // a parsing tool
 
   // My modules below...
-  notes = require('./notes.js');
+  notes = require('./notes.js'),
+
+  titleProperties = {
+    describe: 'Title of note',
+    demand: true, // ie, title is required
+    alias: 't'
+  },
+  bodyProperties = {
+    describe: 'Body of the note',
+    demand: true,
+    alias: 'b'
+  };
 
 // Yargs gives us much more parsing power than working with process.argv directly
-const argv = yargs.argv;
+const argv = yargs
+  .command('add', 'Add a new note', { title: titleProperties , body: bodyProperties } )
+  .command('list', 'List all notes')
+  .command('read', 'Read a note', { title: titleProperties })
+  .command('remove', 'Remove a note', { title: titleProperties })
+  .help()
+  .argv;
 let command = argv._[0]; // same result as below, but using yargs not process
 //let command = process.argv[2];
 
